@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.homework.mapper.BoardMapper">
+
+
+    <!--    게시판 이름 like 인것의 게시글 목록 조회-->
+    <select id="selectArticleList" parameterType="String" resultType="com.example.homework.dto.BoardListResponseDto">
+        SELECT ca.article_id,
+               ca.title,
+               ca.content_html,
+               ca.view_count,
+               ca.is_pinned,
+               ca.created_datetime
+        FROM cms__board as cb
+                 JOIN cms__article as ca
+                      ON ca.board_id = cb.board_id
+        WHERE name_ko like CONCAT('%', #{keyword}, '%')
+    </select>
+
+</mapper>

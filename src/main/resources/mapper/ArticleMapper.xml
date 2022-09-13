@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.homework.mapper.ArticleMapper">
+
+    <!--    게시글 생성-->
+    <insert id="createArticle" parameterType="com.example.homework.dto.CreateModifyDto"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO cms__article
+        VALUES (#{id},
+                1, -- 어떤 게시판을 넣어야 하는지?
+                NOW(),
+                false,
+                0,
+                #{title},
+                #{content_html}, -- html 이라는 의미가 이게 맞는지..?
+                #{content_string})
+    </insert>
+
+    <!-- 게시글 상세-->
+    <resultMap id="boardResult" type="com.example.homework.domain.Article">
+        <id property="id" column="article_id"/>
+        <result property="id" column="article_id"/>
+        <result property="title" column="title"/>
+        <result property="contentHtml" column="content_html"/>
+        <result property="viewCount" column="view_count"/>
+        <result property="createdDatetime" column="created_datetime"/>
+        <result property="isPinned" column="is_pinned"/>
+        <collection property="board" javaType="com.example.homework.domain.Board">
+            <id property="id" column="board_id"/>
+            <result property="nameKo" column="name_ko"/>
+        </collection>
+    </resultMap>
+    <select id="findById" parameterType="long" resultType="com.example.homework.domain.Article"
+            resultMap="boardResult">
+        SELECT ca.article_id,
+               ca.title,
+               ca.content_html,
+               ca.view_count,
+               ca.is_pinned,
+               ca.created_datetime,
+               cb.name_ko
+        FROM cms__article as ca
+                 JOIN cms__board as cb ON ca.board_id = cb.board_id
+        WHERE ca.article_id = #{value}
+    </select>
+
+    <!--    게시글 조회 수 증가-->
+    <update id="countUpById" parameterType="long">
+        update cms__article
+        set view_count = view_count + 1
+        where article_id = #{id}
+    </update>
+
+    <!--    게시글 삭제-->
+    <delete id="deleteById" parameterType="long">
+        delete
+        from cms__article
+        where article_id = #{value}
+    </delete>
+
+    <!-- 게시글 날짜 조회-->
+    <select id="findByDate" parameterType="com.example.homework.dto.DateRequestDto" resultType="com.example.homework.dto.BoardListResponseDto">
+        <![CDATA[
+        SELECT ca.article_id,
+               ca.title,
+               ca.content_html,
+               ca.view_count,
+               ca.is_pinned,
+               ca.created_datetime
+        FROM cms__board as cb
+                 JOIN cms__article as ca
+                      ON ca.board_id = cb.board_id
+        WHERE ca.created_datetime >= TIMESTAMP(#{startDate},'00.00.00') AND ca.created_datetime < TIMESTAMP(#{endDate},'23.59.59')>
+        ]]>
+    </select>
+
+
+
+</mapper>
