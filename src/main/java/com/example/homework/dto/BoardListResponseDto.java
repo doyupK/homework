@@ -1,5 +1,6 @@
 package com.example.homework.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -10,11 +11,11 @@ import java.util.List;
 @Getter
 @Setter
 public class BoardListResponseDto {
-    private Long articleId;
+    private Long id;
     private String title;
     private String contentHtml;
     private int viewCount;
-    private boolean isPinned;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Boolean isPinned;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     private Timestamp createdDatetime;
 }

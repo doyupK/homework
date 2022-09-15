@@ -13,12 +13,10 @@ import java.util.List;
 public class BoardServiceImpl implements BoardService {
 
     private final BoardMapper boardMapper;
-    private final ArticleMapper articleMapper;
 
     @Autowired
-    public BoardServiceImpl(BoardMapper boardMapper, ArticleMapper articleMapper) {
+    public BoardServiceImpl(BoardMapper boardMapper) {
         this.boardMapper = boardMapper;
-        this.articleMapper = articleMapper;
     }
 
     @Override

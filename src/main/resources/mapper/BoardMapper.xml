@@ -7,7 +7,7 @@
 
     <!--    게시판 이름 like 인것의 게시글 목록 조회-->
     <select id="selectArticleList" parameterType="String" resultType="com.example.homework.dto.BoardListResponseDto">
-        SELECT ca.article_id,
+        SELECT ca.article_id as id,
                ca.title,
                ca.content_html,
                ca.view_count,

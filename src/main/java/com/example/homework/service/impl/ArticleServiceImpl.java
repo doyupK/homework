@@ -1,16 +1,15 @@
 package com.example.homework.service.impl;
 
 import com.example.homework.domain.Article;
-import com.example.homework.dto.ArticleResponseDto;
-import com.example.homework.dto.CreateModifyDto;
-import com.example.homework.dto.CreateRequestDto;
-import com.example.homework.dto.DateRequestDto;
+import com.example.homework.dto.*;
 import com.example.homework.mapper.ArticleMapper;
 import com.example.homework.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.HtmlUtils;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -28,9 +27,9 @@ public class ArticleServiceImpl implements ArticleService {
     public void createArticle(CreateRequestDto createRequestDto){
         CreateModifyDto createModifyDto = CreateModifyDto.builder()
                 .title(createRequestDto.getTitle())
-                .content(createRequestDto.getContent())
                 .content_html(createRequestDto.getContent())
                 .content_string(HtmlUtils.htmlEscape(createRequestDto.getContent()))
+                .create_datetime(Timestamp.from(Instant.now()))
                 .build();
 
         articleMapper.createArticle(createModifyDto);
@@ -42,14 +41,19 @@ public class ArticleServiceImpl implements ArticleService {
         Article article = articleMapper.findById(id);
 
         return ArticleResponseDto.builder()
-                .articleId(article.getId())
+                .id(article.getId())
                 .title(article.getTitle())
                 .createdDatetime(article.getCreatedDatetime())
                 .contentHtml(article.getContentHtml())
                 .viewCount(article.getViewCount())
-                .isPinned(article.isPinned())
+                .isPinned(article.getIsPinned())
                 .nameKo(article.getBoard().getNameKo())
                 .build();
+    }
+
+    @Override
+    public List<ArticleListResponseDto> findAll(){
+        return articleMapper.findAll();
     }
 
     @Override

@@ -1,24 +1,19 @@
 package com.example.homework.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Timestamp;
 
-@Builder
 @Getter
 @Setter
-public class ArticleResponseDto {
+public class ArticleListResponseDto {
     private Long id;
     private String title;
-    private String contentHtml;
     private int viewCount;
     private Boolean isPinned;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     private Timestamp createdDatetime;
-    private String nameKo;
-
 }

@@ -1,13 +1,14 @@
 package com.example.homework.mapper;
 
 import com.example.homework.domain.Article;
+import com.example.homework.dto.ArticleListResponseDto;
 import com.example.homework.dto.CreateModifyDto;
 import com.example.homework.dto.DateRequestDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
-@Mapper  //Mapper 인터페이스 선언
+@Mapper
 public interface ArticleMapper {
 
     void createArticle(CreateModifyDto createRequestDto);
@@ -18,5 +19,8 @@ public interface ArticleMapper {
 
     int deleteById(Long id);
 
+
     List<Article> findByDate(DateRequestDto dateRequestDto);
+
+    List<ArticleListResponseDto> findAll();
 }
